@@ -11,8 +11,6 @@ describe("public api", function () {
     describe("when creating a proxy to an exposed api", function () {
         let transp: EventEmitter;
         const apiConfig: IApiConfig = {
-            name: "someService",
-            transport: "",
             props: {
                 foo: true
             }
@@ -40,8 +38,6 @@ describe("public api", function () {
             const transp = new EventEmitter();
 
             const apiConfig: IApiConfig = {
-                name: "someService",
-                transport: "",
                 props: {
                     foo: true
                 }
