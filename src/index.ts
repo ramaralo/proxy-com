@@ -1,13 +1,24 @@
 import {IApiConfig} from "./model/IApiConfig";
-import {ApiProxyFactory} from "./apiProxy/ApiProxyFactory";
 import {ApiService} from "./apiService/ApiService";
 import {IRequestPayload} from "./model/IRequestPayload";
+import {ApiProxy} from "./apiProxy/ApiProxy";
 
 export default {
-    exposeApi(apiConfig: IApiConfig, api: Record<string, Function>) {
-        return new ApiService(apiConfig, api).getInboundFn();
+    exposeApi(apiConfig: IApiConfig, api: Record<string, Function>, Transport: Object) {
+        const apiService =  new ApiService(apiConfig, api);
+        // @ts-ignore
+        apiService.setOutboundFn(new Transport(apiService.getInboundFn()).outboundFn);
+
+        // TODO: allow for destroy
     },
-    createProxy(apiConfig: IApiConfig, outboundFn: (payload: IRequestPayload) => void) {
-        return ApiProxyFactory.create(apiConfig, outboundFn).get();
+    createProxy_(apiConfig: IApiConfig, outboundFn: (payload: IRequestPayload) => void) {
+        return new ApiProxy(apiConfig).get();
+    },
+    createProxy(apiConfig: IApiConfig, Transport: Object) {
+        const apiProxy = new ApiProxy(apiConfig);
+        // @ts-ignore
+        apiProxy.setOutboundFn(new Transport(apiProxy.getInboundFn()).outboundFn);
+
+        return apiProxy.get();
     }
 }

@@ -7,6 +7,6 @@ export abstract class ApiProxyFactory {
 
         //TODO: resolve to the right transport to be passed into proxy factory
 
-        return new ApiProxy(apiConfig, outboundFn);
+        return new ApiProxy(apiConfig);
     }
 }

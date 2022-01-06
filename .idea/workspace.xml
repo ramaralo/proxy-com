@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ad0515b9-3479-4f67-ae1e-07e5ad327b38" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/model/IResponsePayload.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/specs/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/specs/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/IApiConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IApiConfig.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apiProxy/ApiProxy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apiProxy/ApiProxy.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apiProxy/ApiProxyFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apiProxy/ApiProxyFactory.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apiService/ApiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apiService/ApiService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/IRequestPayload.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IRequestPayload.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +72,7 @@
       <updated>1641384843143</updated>
       <workItem from="1641384844707" duration="1994000" />
       <workItem from="1641387276558" duration="8839000" />
-      <workItem from="1641403174531" duration="10254000" />
+      <workItem from="1641403174531" duration="20208000" />
     </task>
     <servers />
   </component>
@@ -74,9 +80,14 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="625" y="277" width="670" height="676" key="search.everywhere.popup" timestamp="1641393860806">
-      <screen x="0" y="23" width="1920" height="1133" />
+    <state x="670" y="-811" key="RollbackChangesDialog" timestamp="1641431778903">
+      <screen x="-424" y="-1057" width="2560" height="1057" />
     </state>
+    <state x="670" y="-811" key="RollbackChangesDialog/-424.-1057.2560.1057/0.23.1920.1133@-424.-1057.2560.1057" timestamp="1641431778903" />
+    <state x="409" y="-820" width="894" height="631" key="search.everywhere.popup" timestamp="1641431699097">
+      <screen x="-424" y="-1057" width="2560" height="1057" />
+    </state>
+    <state x="409" y="-820" width="894" height="631" key="search.everywhere.popup/-424.-1057.2560.1057/0.23.1920.1133@-424.-1057.2560.1057" timestamp="1641431699097" />
     <state x="625" y="277" width="670" height="676" key="search.everywhere.popup/-424.-1057.2560.1057/0.23.1920.1133@0.23.1920.1133" timestamp="1641393860806" />
   </component>
 </project>
