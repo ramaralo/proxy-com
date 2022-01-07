@@ -2,10 +2,13 @@
   "name": "proxy-com",
   "version": "0.0.1",
   "description": "Consume apis that run on different context",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "rm-dist": "rm -rf dist",
     "test": "jest",
-    "test-watch": "jest --watch"
+    "test-watch": "jest --watch",
+    "transpile": "tsc",
+    "dist": "npm run rm-dist && npm run transpile"
   },
   "repository": {
     "type": "git",

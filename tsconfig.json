@@ -4,10 +4,11 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "sourceMap": true,
-    "outDir": "js_compiled",
+    "outDir": "dist",
     "allowJs": true,
     "baseUrl": "src/",
-    "target": "ES5"
+    "target": "ES5",
+    "declaration": true
   },
   "include": [
     "src/**/*",

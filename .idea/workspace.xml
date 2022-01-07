@@ -2,14 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ad0515b9-3479-4f67-ae1e-07e5ad327b38" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/model/IResponsePayload.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.npmignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/specs/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/specs/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/apiProxy/ApiProxy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apiProxy/ApiProxy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/apiProxy/ApiProxyFactory.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apiProxy/ApiProxyFactory.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/apiService/ApiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/apiService/ApiService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/model/IRequestPayload.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/IRequestPayload.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +69,8 @@
       <updated>1641384843143</updated>
       <workItem from="1641384844707" duration="1994000" />
       <workItem from="1641387276558" duration="8839000" />
-      <workItem from="1641403174531" duration="20208000" />
+      <workItem from="1641403174531" duration="20572000" />
+      <workItem from="1641577321642" duration="653000" />
     </task>
     <servers />
   </component>
