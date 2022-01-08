@@ -11,9 +11,6 @@ export default {
 
         // TODO: allow for destroy
     },
-    createProxy_(apiConfig: IApiConfig, outboundFn: (payload: IRequestPayload) => void) {
-        return new ApiProxy(apiConfig).get();
-    },
     createProxy(apiConfig: IApiConfig, Transport: Object) {
         const apiProxy = new ApiProxy(apiConfig);
         // @ts-ignore
