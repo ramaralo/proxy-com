@@ -1,6 +1,5 @@
 import {IApiConfig} from "./model/IApiConfig";
 import {ApiService} from "./apiService/ApiService";
-import {IRequestPayload} from "./model/IRequestPayload";
 import {ApiProxy} from "./apiProxy/ApiProxy";
 
 export default {
