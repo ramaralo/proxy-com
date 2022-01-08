@@ -1,5 +1,5 @@
 {
-  "name": "proxy-com",
+  "name": "@ramaralo/proxy-com",
   "version": "0.0.1",
   "description": "Consume apis that run on different context",
   "main": "dist/index.js",
