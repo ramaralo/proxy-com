@@ -56,14 +56,16 @@ describe("public api", function () {
         jest.resetAllMocks();
     });
 
-    describe("when creating a proxy to an exposed api", function () {
-        it("should return a proxy api", function () {
-            proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
+    describe("USE CASE: Proxy and service matching api behaviour", function() {
+        describe("when creating a proxy to an exposed api", function () {
+            it("should return a proxy api with the same properties as the service", function () {
+                proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
 
-            const proxy = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
+                const proxy = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
 
-            expect(proxy).toHaveProperty("foo");
-        });
+                expect(proxy).toHaveProperty("foo");
+                expect(proxy).toHaveProperty("bar");
+            });
 
         describe("when calling a method on the proxy", function () {
             beforeEach(function () {
@@ -84,7 +86,7 @@ describe("public api", function () {
         });
 
         describe("when calling a method on the proxy that should return a value", function () {
-            it("should return tha value from the service", async function () {
+            it("should return the value from the service", async function () {
                 proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
 
                 const proxy = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
@@ -95,4 +97,42 @@ describe("public api", function () {
             });
         });
     });
+    })
+
+    /*
+    describe("USE CASE: two proxies for the same exposed service", function() {
+        // @ts-ignore
+        let proxy1;
+        // @ts-ignore
+        let proxy2;
+
+        beforeEach(function() {
+            jest.spyOn(service, "foo");
+
+            proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
+
+            proxy1 = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
+            proxy2 = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
+        })
+
+        it("should return a proxy api with the same properties as the service", function () {
+            expect(proxy1).toHaveProperty("foo");
+            expect(proxy1).toHaveProperty("bar");
+
+            expect(proxy2).toHaveProperty("foo");
+            expect(proxy2).toHaveProperty("bar");
+        });
+
+        describe("when calling a property on both proxies", function() {
+            it("should call the service property only once", function() {
+                proxy1.foo();
+                proxy2.foo();
+
+                expect(service.foo).toHaveBeenCalledTimes(1);
+
+            })
+        })
+        
+    })
+    */
 });
