@@ -48,7 +48,9 @@ export class ApiProxy {
     getInboundFn() {
         return (payload: IResponsePayload) => {
             //TODO: see how to reject
-            this.promiseMap.get(payload.uuid).res(payload.returnValue);
+            if(this.promiseMap.has(payload.uuid)) {
+                this.promiseMap.get(payload.uuid).res(payload.returnValue);
+            }
         }
     }
 
