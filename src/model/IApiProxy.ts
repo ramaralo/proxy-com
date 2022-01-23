@@ -1,3 +1,3 @@
 export interface IApiProxy {
-    [key: string]: (...args: unknown[]) => void;
+    [key: string]: (...args: unknown[]) => Promise<void>;
 }
