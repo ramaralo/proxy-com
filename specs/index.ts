@@ -3,8 +3,15 @@ import {IApiConfig} from "../src/model/IApiConfig";
 import {EventEmitter} from "events";
 import {IRequestPayload} from "../src/model/IRequestPayload";
 import {IResponsePayload} from "../src/model/IResponsePayload";
+import { IApiProxy } from "../src/model/IApiProxy";
 
 describe("public api", function () {
+    const barResult = 123;
+    type ServiceType = {
+        foo: () => void;
+        bar: () => typeof barResult;
+    };
+
     let transporter: EventEmitter;
     const apiConfig: IApiConfig = {
         props: {
@@ -12,11 +19,17 @@ describe("public api", function () {
             bar: true
         }
     };
-    const barResult = 123;
+    
 
     const service = {
-        foo: (): void => null,
-        bar: () => barResult
+        foo: (): void => {
+            console.log("service foo called");
+            return null;
+        },
+        bar: () => {
+            console.log("service bar called");
+            return barResult;
+        }
     };
 
     const enum TRANSPORTER_MESSAGES_ENUM {
@@ -27,11 +40,11 @@ describe("public api", function () {
     function getTransportAdapterForService(transporterAdaptee: EventEmitter) {
         return class TransportAdapter {
             constructor(inboundFn: (payload: IRequestPayload) => void) {
-                transporterAdaptee.on("messageFromProxy", inboundFn);
+                transporterAdaptee.on(TRANSPORTER_MESSAGES_ENUM.MESSAGE_FROM_PROXY, inboundFn);
             }
 
             public outboundFn(payload: IResponsePayload) {
-                transporterAdaptee.emit("messageFromService", payload);
+                transporterAdaptee.emit(TRANSPORTER_MESSAGES_ENUM.MESSAGE_FROM_SERVICE, payload);
             }
         }
     }
@@ -99,12 +112,9 @@ describe("public api", function () {
     });
     })
 
-    /*
-    describe("USE CASE: two proxies for the same exposed service", function() {
-        // @ts-ignore
-        let proxy1;
-        // @ts-ignore
-        let proxy2;
+    describe("USE CASE: multiple proxies for the same exposed service", function() {
+        let proxy1: IApiProxy;
+        let proxy2: IApiProxy;
 
         beforeEach(function() {
             jest.spyOn(service, "foo");
@@ -123,16 +133,36 @@ describe("public api", function () {
             expect(proxy2).toHaveProperty("bar");
         });
 
-        describe("when calling a property on both proxies", function() {
-            it("should call the service property only once", function() {
+        describe("when calling a prop on each proxy", function () {
+            it("should call the property on the service as much times as the proxies", function() {
                 proxy1.foo();
                 proxy2.foo();
-
-                expect(service.foo).toHaveBeenCalledTimes(1);
-
-            })
-        })
+    
+                expect(service.foo).toHaveBeenCalledTimes(2);
+            });
         
+            it("sould return the same values", async function() {
+                const result1 = await proxy1.bar();
+                const result2 = await proxy2.bar();
+
+                expect(result1).toEqual(barResult);
+                expect(result2).toEqual(barResult);
+            });
+
+            describe("when service return value changes", function () {
+                it("sould not affect proxy returned values", async function() {
+                    const newValue = 4321;
+                    
+                    const result1 = await proxy1.bar();
+
+                    jest.spyOn(service, "bar").mockImplementation(() => newValue);
+
+                    const result2 = await proxy2.bar();
+
+                    expect(result1).toEqual(barResult);
+                    expect(result2).toEqual(newValue);
+                });
+            })
+        });
     })
-    */
 });
