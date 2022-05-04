@@ -141,7 +141,7 @@ describe("public api", function () {
                 expect(service.foo).toHaveBeenCalledTimes(2);
             });
         
-            it("sould return the same values", async function() {
+            it("should return the same values", async function() {
                 const result1 = await proxy1.bar();
                 const result2 = await proxy2.bar();
 
@@ -150,7 +150,7 @@ describe("public api", function () {
             });
 
             describe("when service return value changes", function () {
-                it("sould not affect proxy returned values", async function() {
+                it("should not affect proxy returned values", async function() {
                     const newValue = 4321;
                     
                     const result1 = await proxy1.bar();
