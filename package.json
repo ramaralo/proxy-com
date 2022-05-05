@@ -1,6 +1,6 @@
 {
   "name": "proxy-com",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Consume apis that run on different context",
   "main": "dist/index.js",
   "scripts": {
@@ -44,5 +44,4 @@
     "not IE 11",
     "maintained node versions"
   ]
-
 }
