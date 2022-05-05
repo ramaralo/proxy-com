@@ -8,9 +8,9 @@
     "test": "jest",
     "test-watch": "jest --watch",
     "transpile": "tsc",
-    "dist": "npm run rm-dist && npm run transpile && npm run build:node && npm run build:web",
-    "build:web": "webpack --config webpack.web.config.js",
-    "build:node": "webpack"
+    "dist": "npm run rm-dist && npm run transpile && npm run dist:node && npm run dist:web",
+    "dist:web": "webpack --config webpack.web.config.js",
+    "dist:node": "webpack"
   },
   "repository": {
     "type": "git",
