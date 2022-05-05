@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from "../utils/crypto";
 import {IApiConfig} from "../model/IApiConfig";
 import {IApiProxy} from "../model/IApiProxy";
 import {IRequestPayload} from "../model/IRequestPayload";
