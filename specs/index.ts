@@ -1,4 +1,4 @@
-import proxycom from "../src/index";
+import {proxycom} from "../src/index";
 import {IApiConfig} from "../src/model/IApiConfig";
 import {EventEmitter} from "events";
 import {IRequestPayload} from "../src/model/IRequestPayload";

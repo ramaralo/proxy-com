@@ -2,7 +2,7 @@ import {IApiConfig} from "./model/IApiConfig";
 import {ApiService} from "./apiService/ApiService";
 import {ApiProxy} from "./apiProxy/ApiProxy";
 
-export default {
+export const proxycom = {
     exposeApi(apiConfig: IApiConfig, api: Record<string, Function>, Transport: Object) {
         const apiService =  new ApiService(apiConfig, api);
         // @ts-ignore
