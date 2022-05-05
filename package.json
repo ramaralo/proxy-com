@@ -1,6 +1,6 @@
 {
   "name": "proxy-com",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Consume apis that run on different context",
   "main": "dist/index.js",
   "scripts": {
