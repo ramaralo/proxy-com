@@ -10,8 +10,8 @@ const webConfig = {
         }
     },
     output: {
-        path: path.resolve(__dirname, './dist'),
-        filename: 'web.bundle.js',
+        path: path.resolve(__dirname, 'dist/bundles/umd'),
+        filename: `proxycom-${process.env.npm_package_version}.js`,
         libraryTarget: 'umd',
         globalObject: 'this',
         libraryExport: 'default',
@@ -20,4 +20,4 @@ const webConfig = {
     },
 }
 
-module.exports = [ Object.assign(commonConfig, webConfig) ];
+module.exports = Object.assign(commonConfig, webConfig);
