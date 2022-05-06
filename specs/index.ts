@@ -71,7 +71,7 @@ describe("public api", function () {
 
     describe("USE CASE: Proxy and service matching api behaviour", function() {
         describe("when creating a proxy to an exposed api", function () {
-            it("should return a proxy api with the same properties as the service", function () {
+            it("should return a proxy api with the same properties as defined on the config", function () {
                 proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
 
                 const proxy = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
@@ -98,7 +98,7 @@ describe("public api", function () {
             });
         });
 
-        describe("when calling a method on the proxy that should return a value", function () {
+        describe("when calling a method on the proxy that returns a value", function () {
             it("should return the value from the service", async function () {
                 proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
 
@@ -125,7 +125,7 @@ describe("public api", function () {
             proxy2 = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
         })
 
-        it("should return a proxy api with the same properties as the service", function () {
+        it("should return a proxy api with the same properties as defined on the config", function () {
             expect(proxy1).toHaveProperty("foo");
             expect(proxy1).toHaveProperty("bar");
 
@@ -134,19 +134,21 @@ describe("public api", function () {
         });
 
         describe("when calling a prop on each proxy", function () {
-            it("should call the property on the service as much times as the proxies", function() {
+            it("should call the property on the service as many times as the proxies", function() {
                 proxy1.foo();
                 proxy2.foo();
     
                 expect(service.foo).toHaveBeenCalledTimes(2);
             });
-        
-            it("should return the same values", async function() {
-                const result1 = await proxy1.bar();
-                const result2 = await proxy2.bar();
 
-                expect(result1).toEqual(barResult);
-                expect(result2).toEqual(barResult);
+            describe("When service return value doesn't change", function () {
+                it("should return the same values", async function() {
+                    const result1 = await proxy1.bar();
+                    const result2 = await proxy2.bar();
+
+                    expect(result1).toEqual(barResult);
+                    expect(result2).toEqual(barResult);
+                });
             });
 
             describe("when service return value changes", function () {
