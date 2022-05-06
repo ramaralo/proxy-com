@@ -1,6 +1,6 @@
 {
   "name": "proxy-com",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Consume apis that run on different context",
   "main": "dist/index.js",
   "scripts": {
@@ -34,8 +34,7 @@
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "browserslist": [
     "defaults",
     "not IE 11",
