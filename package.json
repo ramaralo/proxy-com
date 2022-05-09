@@ -2,6 +2,15 @@
   "name": "proxy-com",
   "version": "0.0.5",
   "description": "Consume apis that run on different context",
+  "keywords": [
+    "proxy",
+    "ipc",
+    "broadcastchannel",
+    "electron",
+    "window communication",
+    "multi process",
+    "web workers"
+  ],
   "main": "dist/index.js",
   "scripts": {
     "rm-dist": "rm -rf dist",
