@@ -15,7 +15,7 @@
   "scripts": {
     "rm-dist": "rm -rf dist",
     "test": "jest",
-    "test-watch": "jest --watch",
+    "test:watch": "jest --watch",
     "transpile": "tsc",
     "dist:web": "webpack --config webpack.web.config.js",
     "dist:node": "webpack",

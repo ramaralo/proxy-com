@@ -13,7 +13,7 @@ export class ApiProxy {
     private promiseMap = new Map<string, {res: Function, rej: Function}>();
 
     constructor(apiConfig: IApiConfig) {
-        for (const prop in apiConfig.props) {
+        for (const prop of apiConfig.props) {
             this.proxy[prop] = (...args: unknown[]): Promise<void> => {
 
                 const uuid = randomUUID();

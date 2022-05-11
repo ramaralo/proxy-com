@@ -1,4 +1,4 @@
-import {proxycom} from "../src/index";
+import {proxycom} from "../src";
 import {IApiConfig} from "../src/model/IApiConfig";
 import {EventEmitter} from "events";
 import {IRequestPayload} from "../src/model/IRequestPayload";
@@ -7,17 +7,9 @@ import { IApiProxy } from "../src/model/IApiProxy";
 
 describe("public api", function () {
     const barResult = 123;
-    type ServiceType = {
-        foo: () => void;
-        bar: () => typeof barResult;
-    };
-
     let transporter: EventEmitter;
     const apiConfig: IApiConfig = {
-        props: {
-            foo: true,
-            bar: true
-        }
+        props: ["foo", "bar"]
     };
     
 
