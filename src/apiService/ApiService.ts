@@ -14,7 +14,7 @@ export class ApiService {
         return this.outboundFn;
     }
 
-    getInboundFn()  {
+    getInboundFn(): (payload: IRequestPayload) => void  {
         return (payload: IRequestPayload) => {
             const {propertyToCall, args} = payload;
             const result = this.api[propertyToCall](...args);
