@@ -16,13 +16,15 @@ export class ApiService {
 
     getInboundFn(): (payload: IRequestPayload) => void  {
         return (payload: IRequestPayload) => {
-            const {propertyToCall, args} = payload;
-            const result = this.api[propertyToCall](...args);
+            const {propertyToCall, args, uuid} = payload;
+            if(propertyToCall && uuid && (propertyToCall in this.api)) {
+                const result = this.api[propertyToCall](...args);
 
-            this.getOutBoundFn()({
-                uuid: payload.uuid,
-                returnValue: result
-            });
+                this.getOutBoundFn()({
+                    uuid: uuid,
+                    returnValue: result
+                });
+            }
         }
     }
 

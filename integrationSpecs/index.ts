@@ -15,11 +15,9 @@ describe("public api", function () {
 
     const service = {
         foo: (): void => {
-            console.log("service foo called");
             return null;
         },
         bar: () => {
-            console.log("service bar called");
             return barResult;
         }
     };
@@ -62,6 +60,40 @@ describe("public api", function () {
     });
 
     describe("USE CASE: Proxy and service matching api behaviour", function() {
+        describe("When a transport receives an unknown message", function () {
+            it("Should not throw errors", function () {
+                /*
+                The transport may rely on some message passing that is not used exclusively by proxy-com. For example,
+                IPC communication can be used by proxy-com and also by any other entity outside its scope. In such cases
+                proxy-com may detect a new message, but it should only work if the message contains a known payload
+                pointing to a known property on the exposed api. Otherwise, it would throw errors trying to read the payload.
+                 */
+                proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
+
+                proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
+
+                expect(() => {
+                    return transporter.emit(TRANSPORTER_MESSAGES_ENUM.MESSAGE_FROM_PROXY, "this is an unsupported message");
+                }).not.toThrowError();
+
+                expect(() => {
+                    return transporter.emit(TRANSPORTER_MESSAGES_ENUM.MESSAGE_FROM_PROXY, {});
+                }).not.toThrowError();
+
+                expect(() => {
+                    return transporter.emit(TRANSPORTER_MESSAGES_ENUM.MESSAGE_FROM_PROXY, {
+                        propertyToCall: "some unknown property"
+                    });
+                }).not.toThrowError();
+
+                expect(() => {
+                    return transporter.emit(TRANSPORTER_MESSAGES_ENUM.MESSAGE_FROM_PROXY, {
+                        propertyToCall: "some unknown property",
+                        uuid: "some uuid"
+                    });
+                }).not.toThrowError();
+            });
+        })
         describe("when creating a proxy to an exposed api", function () {
             it("should return a proxy api with the same properties as defined on the config", function () {
                 proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));

@@ -48,6 +48,7 @@ export class ApiProxy {
     getInboundFn() {
         return (payload: IResponsePayload) => {
             //TODO: see how to reject
+            //TODO: should remove promise from map?
             if(this.promiseMap.has(payload.uuid)) {
                 this.promiseMap.get(payload.uuid).res(payload.returnValue);
             }

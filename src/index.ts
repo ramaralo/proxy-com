@@ -11,8 +11,6 @@ const exposeApi = (apiConfig: IApiConfig, api: Record<string, Function>, Transpo
 };
 
 const createProxy = (apiConfig: IApiConfig, Transport: Object) => {
-    console.log("creating proxy...");
-
     const apiProxy = new ApiProxy(apiConfig);
     // @ts-ignore
     apiProxy.setOutboundFn(new Transport(apiProxy.getInboundFn()).outboundFn);
