@@ -1,5 +1,5 @@
-const {proxycom} = require("../../dist");
-const apiConfig = require("./apiConfig");
+const {proxycom} = require("../dist");
+const apiConfig = {props: ["foo"]};
 
 /*
 Access API on parent

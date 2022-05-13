@@ -3,7 +3,7 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: [
-    "**/integrationSpecs/**/*.ts",
+    "**/integrationSpecs/**/*.spec.ts",
     "**/*.spec.ts"
   ]
 };

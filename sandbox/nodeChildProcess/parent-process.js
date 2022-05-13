@@ -5,6 +5,9 @@ const {proxycom} = require("../../dist");
 const apiConfig = require("./apiConfig");
 
 const child = fork(path.resolve(__dirname,'./child-process'));
+child.on("message", (message) => {
+    console.log("received message from child", message);
+})
 
 /*
 Expose API to child
