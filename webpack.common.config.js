@@ -1,6 +1,6 @@
 module.exports = {
     mode: "development",
-    entry: ['./src/index.spec.ts', './src/transports/nodejs/process'],
+    entry: ['./src/index', './src/transports/nodejs/process'],
     module: {
         rules: [
             {
