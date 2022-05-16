@@ -16,7 +16,7 @@ function getTransportForProxy(process) {
     }
 }
 
-const proxy = proxycom.createProxy(apiConfig, getTransportForProxy(process));
+const proxy = proxycom.createProxy({apiConfig, transport: getTransportForProxy(process)});
 
 process.on("message", (message) => {
     if(message.action === "callFoo") {
