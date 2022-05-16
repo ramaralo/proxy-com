@@ -1,7 +1,7 @@
 const path = require("path");
 const {fork} = require('child_process');
-const {processTransport} = require("./../dist/transports/nodejs/process");
-const {proxycom} = require("../dist");
+const {processTransport} = require("../../../dist/transports/nodejs/process");
+const {proxycom} = require("../../../dist");
 
 const apiConfig = {props: ["foo"]};
 

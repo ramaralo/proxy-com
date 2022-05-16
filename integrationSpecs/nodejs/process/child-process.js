@@ -1,4 +1,4 @@
-const {proxycom} = require("../dist");
+const {proxycom} = require("../../../dist");
 const apiConfig = {props: ["foo"]};
 
 /*
