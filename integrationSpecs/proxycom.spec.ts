@@ -11,7 +11,6 @@ describe("public api", function () {
     const apiConfig: IApiConfig = {
         props: ["foo", "bar"]
     };
-    
 
     const service = {
         foo: (): void => {
@@ -190,5 +189,10 @@ describe("public api", function () {
                 });
             })
         });
+    })
+
+    describe("USE CASE: two exposed services with one proxy each", function () {
+        let proxy1: IApiProxy;
+        let proxy2: IApiProxy;
     })
 });
