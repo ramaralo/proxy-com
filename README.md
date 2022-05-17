@@ -41,13 +41,17 @@ proxycom.exposeApi({
 ```
 And then create a proxy to that api:
 ```javascript
-const proxy = proxycom.createProxy(apiConfig, transport) // transport is explained ahead
+const proxy = proxycom.createProxy({
+    apiConfig: <someConfig>, // we will explain this ahead
+    transport: <someTransport>, // we will explain this ahead
+});
 
 proxy.foo();
 ```
 # One lib, different contexts
 **Proxy-com** itself is unaware of the context it is used in. It can be used between NodeJs processes, Browser windows,
-etc. To achieve this, it uses specific Transports that do the actual work of sending messages between contexts.
+Web Workers, Chrome extensions, Electron processes, etc. To achieve this, it uses specific Transports that do the actual
+work of sending messages between contexts.
 
 One common scenario is when we want to consume apis that run on a different NodeJs process. This is one possible (simplified)
 way to create a new process in NodeJs. Consider two sibling files: `parentProcess.js` and `childProcess.js`:
@@ -87,8 +91,8 @@ Now, suppose `parentProcess` is running some api we want to consume on `childPro
 ```javascript
 // parentProcess.js
 const path = require("path");
-const { fork } = require('./child_process');
-const child = fork(path.resolve(__dirname,'childProcess.js'));
+const { fork } = require("child_process");
+const child = fork(path.resolve(__dirname, "childProcess.js"));
 
 // we want childProcess to access this api:
 const myApi = {
@@ -103,11 +107,12 @@ child.on("message", (message) => {
 
 child.send("Message from parentProcess");
 ```
-By using `proxy-com` we can do the following:
+By using `proxy-com` we don't need to handle the message passing between processes. Instead, we can do the following:
 ```javascript
 // parentProcess.js
+
 const path = require("path");
-const { fork } = require('./child_process');
+const { fork } = require('child_process');
 const child = fork(path.resolve(__dirname,'childProcess.js'));
 
 const { proxycom } = require("proxy-com");
@@ -122,7 +127,7 @@ const myApi = {
 
 proxycom.exposeApi({
     apiConfig: { props: [ "foo" ]}, // declaring what methods of myApi we want to expose
-    transport: processTransport.getForParentProcess(child), // using a parent proces transport specific for multi NodeJs processes
+    transport: processTransport.getForParentProcess(child), // using a parent process transport specific for multi NodeJs processes
     api: myApi // exposing the api
 })
 ```
