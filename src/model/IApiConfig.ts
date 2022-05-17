@@ -1,3 +1,3 @@
 export interface IApiConfig {
-    props: string[];
+  props: string[];
 }

@@ -1,4 +1,4 @@
 export interface IResponsePayload {
-    uuid: string;
-    returnValue: unknown;
+  uuid: string;
+  returnValue: unknown;
 }

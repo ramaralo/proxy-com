@@ -1,5 +1,5 @@
 export interface IRequestPayload {
-    uuid: string;
-    propertyToCall: string,
-    args: unknown[]
+  uuid: string;
+  propertyToCall: string;
+  args: unknown[];
 }

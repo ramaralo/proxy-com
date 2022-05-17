@@ -1,1 +1,1 @@
-module.exports = {props: ["foo", "resolved"]};
+module.exports = { props: ["foo", "resolved"] };
