@@ -13,7 +13,19 @@ lot of repeated code.
 
 **Proxy-com** aims to help by implementing a Proxy pattern to the API you want to consume.
 
-Generically, an API is exposed:
+## Install
+`npm i proxy-com`
+
+## Require
+```javascript
+const { proxycom } = require("proxy-com");
+
+// or
+
+import { proxycom } from "proxy-com";
+
+```
+Expose an api:
 ```javascript
 const myApi = {
     foo: () => {
@@ -21,9 +33,13 @@ const myApi = {
     }
 }
 
-proxycom.exposeApi(apiConfig, myService, transport) // apiConfig and transport are explained ahead
+proxycom.exposeApi({
+    apiConfig: <someConfig>, // we will explain this ahead
+    transport: <someTransport>, // we will explain this ahead
+    api: myApi
+});
 ```
-And then a proxy is created:
+And then create a proxy to that api:
 ```javascript
 const proxy = proxycom.createProxy(apiConfig, transport) // transport is explained ahead
 
@@ -33,34 +49,98 @@ proxy.foo();
 **Proxy-com** itself is unaware of the context it is used in. It can be used between NodeJs processes, Browser windows,
 etc. To achieve this, it uses specific Transports that do the actual work of sending messages between contexts.
 
-Example:
+One common scenario is when we want to consume apis that run on a different NodeJs process. This is one possible (simplified)
+way to create a new process in NodeJs. Consider two sibling files: `parentProcess.js` and `childProcess.js`:
 
-Suppose you have the following code on Process A:
 ```javascript
-// Process A
+// parentProcess.js
+const path = require("path");
+const { fork } = require('./child_process');
+const child = fork(path.resolve(__dirname,'childProcess.js'));
+
+child.on("message", (message) => {
+    console.log("parentProcess received:", message);
+});
+
+child.send("Message from parentProcess");
+```
+
+```javascript
+// childProcess.js
+process.on("message", (message) => {
+    console.log("childProcess received:", message);
+});
+
+process.send("Message from childProcess");
+```
+If you run:
+`node parentProcess.js`
+
+You will get the following output:
+
+```
+parentProcess received: Message from childProcess
+childProcess received: Message from parentProcess
+```
+
+Now, suppose `parentProcess` is running some api we want to consume on `childProcess`:
+```javascript
+// parentProcess.js
+const path = require("path");
+const { fork } = require('./child_process');
+const child = fork(path.resolve(__dirname,'childProcess.js'));
+
+// we want childProcess to access this api:
 const myApi = {
-    foo: () => {
-        // do some stuff
+    foo: (arg) => {
+        console.log("Foo called with", arg);
     }
 }
-```
 
-And on Process B you want to consume `MyApi`. So, first `myApi` will have to be exposed:
+child.on("message", (message) => {
+    console.log("parentProcess received:", message);
+});
+
+child.send("Message from parentProcess");
+```
+By using `proxy-com` we can do the following:
 ```javascript
-// Process A
+// parentProcess.js
+const path = require("path");
+const { fork } = require('./child_process');
+const child = fork(path.resolve(__dirname,'childProcess.js'));
+
+const { proxycom } = require("proxy-com");
+const { processTransport } = require("proxy-com/transports/nodejs/process");
+
 const myApi = {
-    foo: () => {
-        // do some stuff
+    foo: (arg) => {
+        console.log("Foo called with", arg);
+        return `Hi ${arg}, nice to meet you!`;
     }
 }
-proxycom.exposeApi(apiConfig, myService, transport);
+
+proxycom.exposeApi({
+    apiConfig: { props: [ "foo" ]}, // declaring what methods of myApi we want to expose
+    transport: processTransport.getForParentProcess(child), // using a parent proces transport specific for multi NodeJs processes
+    api: myApi // exposing the api
+})
 ```
-And then consumed via proxy:
+
+and:
 ```javascript
-// Process B
-const proxy = proxycom.createProxy(apiConfig, transport)
+// childProcess.js
 
-proxy.foo();
+const { proxycom } = require("proxy-com");
+const { processTransport } = require("proxy-com/transports/nodejs/process");
+
+const proxy = proxycom.createProxy({
+    apiConfig: { props: [ "foo" ]}, // declaring what method we want to proxy (usually the same that are exposed)
+    transport: processTransport.getForChildProcess(process) // using a child process transport specific for multi NodeJs processes
+})
+
+proxy.foo("childProcess").then((response) => {
+    console.log(response); // "Hi childProcess, nice to meet you!"
+});
 ```
-
 
