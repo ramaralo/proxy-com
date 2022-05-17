@@ -36,7 +36,7 @@ module.exports = {
                 foo: fooSpy
             }
 
-            proxycom.exposeApi(apiConfig, service, processTransport.getForParentProcess(child));
+            proxycom.exposeApi({apiConfig, api: service, transport: processTransport.getForParentProcess(child)});
 
             child.send({action: "callFoo", value: callFooWith});
         })

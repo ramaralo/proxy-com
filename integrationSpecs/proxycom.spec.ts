@@ -67,9 +67,9 @@ describe("public api", function () {
                 proxy-com may detect a new message, but it should only work if the message contains a known payload
                 pointing to a known property on the exposed api. Otherwise, it would throw errors trying to read the payload.
                  */
-                proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
+                proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
 
-                proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
+                proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
                 expect(() => {
                     return transporter.emit(TRANSPORTER_MESSAGES_ENUM.MESSAGE_FROM_PROXY, "this is an unsupported message");
@@ -95,9 +95,9 @@ describe("public api", function () {
         })
         describe("when creating a proxy to an exposed api", function () {
             it("should return a proxy api with the same properties as defined on the config", function () {
-                proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
+                proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
 
-                const proxy = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
+                const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
                 expect(proxy).toHaveProperty("foo");
                 expect(proxy).toHaveProperty("bar");
@@ -109,9 +109,9 @@ describe("public api", function () {
             });
 
             it("should call the corresponding method on the exposed api", function () {
-                proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
+                proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
 
-                const proxy = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
+                const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
                 const args = [1, true];
 
@@ -123,9 +123,9 @@ describe("public api", function () {
 
         describe("when calling a method on the proxy that returns a value", function () {
             it("should return the value from the service", async function () {
-                proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
+                proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
 
-                const proxy = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
+                const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
                 const result = await proxy.bar();
 
@@ -142,10 +142,10 @@ describe("public api", function () {
         beforeEach(function() {
             jest.spyOn(service, "foo");
 
-            proxycom.exposeApi(apiConfig, service, getTransportAdapterForService(transporter));
+            proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
 
-            proxy1 = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
-            proxy2 = proxycom.createProxy(apiConfig, getTransportAdapterForProxy(transporter));
+            proxy1 = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
+            proxy2 = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
         })
 
         it("should return a proxy api with the same properties as defined on the config", function () {
