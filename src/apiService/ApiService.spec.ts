@@ -33,7 +33,61 @@ describe("ApiService", function () {
         });
 
         describe("When the returned function is called", function () {
-            it("Should call the outbound function", function () {
+            let apiService: ApiService;
+            beforeEach(function () {
+                apiService = createApiService({
+                        props: ["foo"]
+                    },
+                    {
+                        foo: () => 123
+                    })
+            })
+
+            it("Should call the outbound function", async function () {
+                const outboundSpy = jest.fn();
+                apiService.setOutboundFn(outboundSpy);
+
+                await apiService.getInboundFn()({
+                    propertyToCall: "foo",
+                    uuid: "1234",
+                    args:  []
+                });
+
+                expect(outboundSpy).toHaveBeenCalledWith({
+                    uuid: "1234",
+                    returnValue: 123
+                });
+            })
+        })
+
+        describe("When the api method returns a promise", function () {
+            let apiService: ApiService;
+            beforeEach(function () {
+                apiService = createApiService({
+                        props: ["foo"]
+                    },
+                    {
+                        foo: () => Promise.resolve(123)
+                    })
+            });
+
+            it("The outbound function should be called with the resolved value", async function () {
+                const outboundSpy = jest.fn();
+                apiService.setOutboundFn(outboundSpy);
+
+                await apiService.getInboundFn()({
+                    propertyToCall: "foo",
+                    uuid: "1234",
+                    args:  []
+                });
+
+                expect(outboundSpy).toHaveBeenCalledWith({
+                    uuid: "1234",
+                    returnValue: 123
+                });
+            })
+
+            describe("When the api method returns a rejected promise", function () {
 
             })
         })

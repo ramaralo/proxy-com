@@ -15,10 +15,10 @@ export class ApiService {
     }
 
     getInboundFn(): (payload: IRequestPayload) => void  {
-        return (payload: IRequestPayload) => {
+        return async (payload: IRequestPayload) => {
             const {propertyToCall, args, uuid} = payload;
             if(propertyToCall && uuid && (propertyToCall in this.api)) {
-                const result = this.api[propertyToCall](...args);
+                const result = await this.api[propertyToCall](...args);
 
                 this.getOutBoundFn()({
                     uuid: uuid,
