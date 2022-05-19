@@ -8,9 +8,6 @@ import { IApiProxy } from "../src/model/IApiProxy";
 describe("public api", function () {
     const barResult = 123;
     let transporter: EventEmitter;
-    const apiConfig: IApiConfig = {
-        props: ["foo", "bar"]
-    };
 
     const service = {
         foo: (): void => {
@@ -18,7 +15,20 @@ describe("public api", function () {
         },
         bar: () => {
             return barResult;
+        },
+        reject: () => {
+            return Promise.reject("rejected")
+        },
+        resolve: () => {
+            return Promise.resolve("resolved");
+        },
+        error: () => {
+            throw new Error("some error");
         }
+    };
+
+    const apiConfig: IApiConfig = {
+        props: Object.keys(service)
     };
 
     const enum TRANSPORTER_MESSAGES_ENUM {
@@ -101,6 +111,9 @@ describe("public api", function () {
 
                 expect(proxy).toHaveProperty("foo");
                 expect(proxy).toHaveProperty("bar");
+                expect(proxy).toHaveProperty("reject");
+                expect(proxy).toHaveProperty("resolve");
+                expect(proxy).toHaveProperty("error");
             });
 
         describe("when calling a method on the proxy", function () {
@@ -132,6 +145,42 @@ describe("public api", function () {
                 expect(result).toEqual(barResult);
             });
         });
+
+            describe("When calling a method from the service that returns a promise", function () {
+                describe("When the promise resolves", function () {
+                    it("Should resolve on the proxy with the same value", async function () {
+                        proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+
+                        const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
+
+                        await expect(proxy.resolve()).resolves.toMatch("resolved");
+                    })
+                })
+
+                describe("When the promise rejects", function () {
+                    it("Should reject on the proxy with the same value", async function () {
+                        proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+
+                        const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
+
+                        await expect(proxy.reject()).rejects.toMatch("rejected");
+                    })
+                })
+
+                describe("When the service method throws", function () {
+                    it("Should throw on the proxy with the same value", async function () {
+                        proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+
+                        const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
+
+                        try {
+                            await proxy.error()
+                        } catch (e) {
+                            expect(e).toEqual(new Error("some error"));
+                        }
+                    })
+                })
+            })
     });
     })
 
