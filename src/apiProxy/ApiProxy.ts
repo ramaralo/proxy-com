@@ -2,7 +2,7 @@ import { randomUUID } from "../utils/crypto";
 import {IApiConfig} from "../model/IApiConfig";
 import {IApiProxy} from "../model/IApiProxy";
 import {IRequestPayload} from "../model/IRequestPayload";
-import {IResponsePayload} from "../model/IResponsePayload";
+import {IResponsePayload, IResponsePayloadEnum} from "../model/IResponsePayload";
 
 type outboundFn = (payload: IRequestPayload) => void;
 
@@ -32,7 +32,6 @@ export class ApiProxy {
                     });
 
                 });
-
             }
         }
     }
@@ -47,10 +46,20 @@ export class ApiProxy {
 
     getInboundFn() {
         return (payload: IResponsePayload) => {
-            //TODO: see how to reject
-            //TODO: should remove promise from map?
             if(this.promiseMap.has(payload.uuid)) {
-                this.promiseMap.get(payload.uuid).res(payload.returnValue);
+                switch (payload.type) {
+                    case IResponsePayloadEnum.ERROR:
+                        this.promiseMap.delete(payload.uuid);
+                        throw new Error(payload.returnValue as string);
+                        break;
+                    case IResponsePayloadEnum.REJECTED:
+                        this.promiseMap.get(payload.uuid).rej(payload.returnValue);
+                        this.promiseMap.delete(payload.uuid);
+                        break;
+                    case IResponsePayloadEnum.RESOLVED:
+                        this.promiseMap.get(payload.uuid).res(payload.returnValue);
+                        this.promiseMap.delete(payload.uuid);
+                }
             }
         }
     }

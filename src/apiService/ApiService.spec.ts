@@ -54,6 +54,7 @@ describe("ApiService", function () {
                 });
 
                 expect(outboundSpy).toHaveBeenCalledWith({
+                    type: "resolved",
                     uuid: "1234",
                     returnValue: 123
                 });
@@ -82,6 +83,7 @@ describe("ApiService", function () {
                 });
 
                 expect(outboundSpy).toHaveBeenCalledWith({
+                    type: "resolved",
                     uuid: "1234",
                     returnValue: 123
                 });
