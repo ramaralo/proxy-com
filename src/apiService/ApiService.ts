@@ -6,8 +6,10 @@ type outboundFn = (payload: IResponsePayload) => void;
 
 export class ApiService {
     private outboundFn: outboundFn;
+    private name;
 
     constructor(apiConfig: IApiConfig, private api: Record<string, Function>) {
+        this.name = apiConfig.name;
     }
 
     private getOutBoundFn(): outboundFn {
@@ -20,8 +22,9 @@ export class ApiService {
 
     getInboundFn(): (payload: IRequestPayload) => void  {
         return async (payload: IRequestPayload) => {
-            const {propertyToCall, args, uuid} = payload;
-            if(propertyToCall && uuid && (propertyToCall in this.api)) {
+            const {propertyToCall, args, uuid, name} = payload;
+
+            if(name === this.name && propertyToCall && uuid && (propertyToCall in this.api)) {
                 let responsePayload: IResponsePayload = {
                     uuid,
                     type: IResponsePayloadEnum.RESOLVED,

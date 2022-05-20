@@ -21,6 +21,7 @@ describe("ApiProxy", function () {
     describe("getInboundFn()", function () {
         it("Should return a function", function () {
             const proxy = new ApiProxy({
+                name: "apiService",
                 props: []
             });
 
@@ -37,6 +38,7 @@ describe("ApiProxy", function () {
 
         beforeEach(function () {
             const proxyInstance = new ApiProxy({
+                name: "apiService",
                 props: ["foo"]
             });
 

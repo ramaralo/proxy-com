@@ -9,6 +9,7 @@ describe("ApiService", function () {
     describe("When instantiated", function () {
         it("Should return the expected api", function () {
             const apiService = createApiService({
+                    name: "apiService",
                     props: []
                 },
                 {
@@ -23,6 +24,7 @@ describe("ApiService", function () {
     describe("getInboundFn()", function () {
         it("Should return a function", function () {
             const apiService = createApiService({
+                    name: "apiService",
                     props: []
                 },
                 {
@@ -36,6 +38,7 @@ describe("ApiService", function () {
             let apiService: ApiService;
             beforeEach(function () {
                 apiService = createApiService({
+                        name: "apiService",
                         props: ["foo"]
                     },
                     {
@@ -48,6 +51,7 @@ describe("ApiService", function () {
                 apiService.setOutboundFn(outboundSpy);
 
                 await apiService.getInboundFn()({
+                    name: "apiService",
                     propertyToCall: "foo",
                     uuid: "1234",
                     args:  []
@@ -65,6 +69,7 @@ describe("ApiService", function () {
             let apiService: ApiService;
             beforeEach(function () {
                 apiService = createApiService({
+                        name: "apiService",
                         props: ["foo"]
                     },
                     {
@@ -77,6 +82,7 @@ describe("ApiService", function () {
                 apiService.setOutboundFn(outboundSpy);
 
                 await apiService.getInboundFn()({
+                    name: "apiService",
                     propertyToCall: "foo",
                     uuid: "1234",
                     args:  []

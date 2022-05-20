@@ -9,7 +9,7 @@ describe("public api", function () {
     const barResult = 123;
     let transporter: EventEmitter;
 
-    const service = {
+    const api_one = {
         foo: (): void => {
             return null;
         },
@@ -27,8 +27,15 @@ describe("public api", function () {
         }
     };
 
+    const api_two = {
+        foo: (): void => {
+            return null;
+        }
+    };
+
     const apiConfig: IApiConfig = {
-        props: Object.keys(service)
+        name: "configForService",
+        props: Object.keys(api_one)
     };
 
     const enum TRANSPORTER_MESSAGES_ENUM {
@@ -77,7 +84,7 @@ describe("public api", function () {
                 proxy-com may detect a new message, but it should only work if the message contains a known payload
                 pointing to a known property on the exposed api. Otherwise, it would throw errors trying to read the payload.
                  */
-                proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+                proxycom.exposeApi({apiConfig, api: api_one, transport: getTransportAdapterForService(transporter)});
 
                 proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
@@ -105,7 +112,7 @@ describe("public api", function () {
         })
         describe("when creating a proxy to an exposed api", function () {
             it("should return a proxy api with the same properties as defined on the config", function () {
-                proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+                proxycom.exposeApi({apiConfig, api: api_one, transport: getTransportAdapterForService(transporter)});
 
                 const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
@@ -118,11 +125,11 @@ describe("public api", function () {
 
         describe("when calling a method on the proxy", function () {
             beforeEach(function () {
-                jest.spyOn(service, "foo");
+                jest.spyOn(api_one, "foo");
             });
 
             it("should call the corresponding method on the exposed api", function () {
-                proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+                proxycom.exposeApi({apiConfig, api: api_one, transport: getTransportAdapterForService(transporter)});
 
                 const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
@@ -130,13 +137,13 @@ describe("public api", function () {
 
                 proxy.foo(...args);
 
-                expect(service.foo).toHaveBeenCalledWith(...args);
+                expect(api_one.foo).toHaveBeenCalledWith(...args);
             });
         });
 
         describe("when calling a method on the proxy that returns a value", function () {
             it("should return the value from the service", async function () {
-                proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+                proxycom.exposeApi({apiConfig, api: api_one, transport: getTransportAdapterForService(transporter)});
 
                 const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
@@ -149,7 +156,7 @@ describe("public api", function () {
             describe("When calling a method from the service that returns a promise", function () {
                 describe("When the promise resolves", function () {
                     it("Should resolve on the proxy with the same value", async function () {
-                        proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+                        proxycom.exposeApi({apiConfig, api: api_one, transport: getTransportAdapterForService(transporter)});
 
                         const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
@@ -159,7 +166,7 @@ describe("public api", function () {
 
                 describe("When the promise rejects", function () {
                     it("Should reject on the proxy with the same value", async function () {
-                        proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+                        proxycom.exposeApi({apiConfig, api: api_one, transport: getTransportAdapterForService(transporter)});
 
                         const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
@@ -169,7 +176,7 @@ describe("public api", function () {
 
                 describe("When the service method throws", function () {
                     it("Should throw on the proxy with the same value", async function () {
-                        proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+                        proxycom.exposeApi({apiConfig, api: api_one, transport: getTransportAdapterForService(transporter)});
 
                         const proxy = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
 
@@ -189,9 +196,9 @@ describe("public api", function () {
         let proxy2: IApiProxy;
 
         beforeEach(function() {
-            jest.spyOn(service, "foo");
+            jest.spyOn(api_one, "foo");
 
-            proxycom.exposeApi({apiConfig, api: service, transport: getTransportAdapterForService(transporter)});
+            proxycom.exposeApi({apiConfig, api: api_one, transport: getTransportAdapterForService(transporter)});
 
             proxy1 = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
             proxy2 = proxycom.createProxy({apiConfig, transport: getTransportAdapterForProxy(transporter)});
@@ -210,7 +217,7 @@ describe("public api", function () {
                 proxy1.foo();
                 proxy2.foo();
     
-                expect(service.foo).toHaveBeenCalledTimes(2);
+                expect(api_one.foo).toHaveBeenCalledTimes(2);
             });
 
             describe("When service return value doesn't change", function () {
@@ -229,7 +236,7 @@ describe("public api", function () {
                     
                     const result1 = await proxy1.bar();
 
-                    jest.spyOn(service, "bar").mockImplementation(() => newValue);
+                    jest.spyOn(api_one, "bar").mockImplementation(() => newValue);
 
                     const result2 = await proxy2.bar();
 
@@ -240,8 +247,59 @@ describe("public api", function () {
         });
     })
 
-    describe("USE CASE: two exposed services with one proxy each", function () {
-        let proxy1: IApiProxy;
-        let proxy2: IApiProxy;
+    describe("GIVEN: Apis api_one and api_two that each have one method called foo", function () {
+        const api_one = {
+            foo: (): null => null
+        }
+
+        const api_two = {
+            foo: (): null => null
+        }
+
+        const apiOneConfig: IApiConfig = {
+            name: "apiOne",
+            props: ["foo"]
+        };
+
+        const apiTwoConfig: IApiConfig = {
+            name: "apiTwo",
+            props: ["foo"]
+        };
+
+        let proxy_one:IApiProxy;
+        let proxy_two: IApiProxy;
+
+        beforeEach(function () {
+            jest.spyOn(api_two, "foo");
+
+            proxy_one = proxycom.createProxy({
+                apiConfig: apiOneConfig,
+                transport: getTransportAdapterForProxy(transporter)}
+            )
+            proxy_two = proxycom.createProxy({
+                apiConfig: apiOneConfig,
+                transport: getTransportAdapterForProxy(transporter)}
+            )
+
+            proxycom.exposeApi({
+                apiConfig: apiOneConfig,
+                api: api_one,
+                transport: getTransportAdapterForService(transporter)
+            })
+
+            proxycom.exposeApi({
+                apiConfig: apiTwoConfig,
+                api: api_two,
+                transport: getTransportAdapterForService(transporter)
+            })
+        })
+
+        describe("When calling foo() on proxy_one", function () {
+            it("Should not call foo() for api_two", async function () {
+                await proxy_one.foo();
+
+                expect(api_two.foo).not.toHaveBeenCalled();
+            })
+        })
     })
 });

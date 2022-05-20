@@ -9,10 +9,11 @@ type outboundFn = (payload: IRequestPayload) => void;
 export class ApiProxy {
     private proxy: IApiProxy = {};
     private outboundFn: outboundFn;
-
     private promiseMap = new Map<string, {res: Function, rej: Function}>();
 
     constructor(apiConfig: IApiConfig) {
+        const {name} = apiConfig;
+
         for (const prop of apiConfig.props) {
             this.proxy[prop] = (...args: unknown[]): Promise<void> => {
 
@@ -26,6 +27,7 @@ export class ApiProxy {
                     });
 
                     this.getOutboundFn()({
+                        name,
                         uuid,
                         propertyToCall: prop,
                         args
