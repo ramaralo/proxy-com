@@ -1,5 +1,5 @@
 const {proxycom} = require("../../../dist");
-const apiConfig = {props: ["foo"]};
+const apiConfig = {name: "myService", props: ["foo"]};
 
 /*
 Access API on parent
@@ -16,7 +16,13 @@ function getTransportForProxy(process) {
     }
 }
 
-const proxy = proxycom.createProxy({apiConfig, transport: getTransportForProxy(process)});
+const proxy = proxycom.createProxy(
+    {
+        name: "myService",
+        apiConfig,
+        transport: getTransportForProxy(process)
+    }
+);
 
 process.on("message", (message) => {
     if(message.action === "callFoo") {

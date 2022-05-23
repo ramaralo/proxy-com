@@ -3,7 +3,10 @@ const {fork} = require('child_process');
 const {processTransport} = require("../../../dist/transports/nodejs/process");
 const {proxycom} = require("../../../dist");
 
-const apiConfig = {props: ["foo"]};
+const apiConfig = {
+    name: "myService",
+    props: ["foo"]
+};
 
 /**
  * Utility to help the test execution of multi-process scenario.
@@ -36,7 +39,11 @@ module.exports = {
                 foo: fooSpy
             }
 
-            proxycom.exposeApi({apiConfig, api: service, transport: processTransport.getForParentProcess(child)});
+            proxycom.exposeApi({
+                apiConfig,
+                api: service,
+                transport: processTransport.getForParentProcess(child)
+            });
 
             child.send({action: "callFoo", value: callFooWith});
         })
