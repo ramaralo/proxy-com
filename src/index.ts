@@ -7,7 +7,7 @@ const exposeApi = ({apiConfig, api, transport}: {apiConfig: IApiConfig, api: Rec
     // @ts-ignore
     apiService.setOutboundFn(new transport(apiService.getInboundFn()).outboundFn);
 
-    // TODO: allow for destroy
+    // TODO: shold allow for destroy?
 };
 
 const createProxy = ({apiConfig, transport}: {apiConfig: IApiConfig, transport: Object}) => {
