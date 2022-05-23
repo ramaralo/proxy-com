@@ -14,15 +14,20 @@
   "main": "dist/index.js",
   "scripts": {
     "rm-dist": "rm -rf dist",
+    "rm:coverage": "rm -rf dist",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "pretest": "npm run dist",
-    "pretest:watch": "npm run dist",
+    "test:watch": "npm run test -- --watch",
+    "test:coverage": "npm run rm:coverage && run test -- --coverage",
+    "pretest": "npm run rm-dist && npm run dist",
     "transpile": "tsc",
     "dist:web": "webpack --config webpack.web.config.js",
     "dist:node": "webpack",
     "dist": "npm run rm-dist && npm run transpile && npm run dist:node && npm run dist:web",
-    "publish": "np"
+    "publish": "np",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "repository": {
     "type": "git",
@@ -37,8 +42,11 @@
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "browserslist": "^4.20.3",
+    "husky": "^8.0.1",
     "jest": "^27.4.6",
+    "lint-staged": "^12.4.1",
     "np": "^7.6.1",
+    "prettier": "2.6.2",
     "source-map-support": "^0.5.21",
     "ts-jest": "^27.1.2",
     "ts-loader": "^9.3.0",
