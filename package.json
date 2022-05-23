@@ -25,7 +25,7 @@
     "dist": "npm run rm-dist && npm run transpile && npm run dist:node && npm run dist:web",
     "publish": "np",
     "prepare": "husky install",
-    "prettier": "prettier"
+    "prettier": "prettier --write"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
