@@ -24,7 +24,7 @@ export class ApiService {
         return async (payload: IRequestPayload) => {
             const {propertyToCall, args, uuid, name} = payload;
 
-            if(name === this.name && propertyToCall && uuid && (propertyToCall in this.api)) {
+            if(name === this.name) {
                 let responsePayload: IResponsePayload = {
                     uuid,
                     type: IResponsePayloadEnum.RESOLVED,

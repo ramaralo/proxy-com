@@ -66,36 +66,99 @@ describe("ApiService", function () {
         })
 
         describe("When the api method returns a promise", function () {
-            let apiService: ApiService;
-            beforeEach(function () {
-                apiService = createApiService({
+            describe("When the promise is resolved", function () {
+                let apiService: ApiService;
+                beforeEach(function () {
+                    apiService = createApiService({
+                            name: "apiService",
+                            props: ["foo"]
+                        },
+                        {
+                            foo: () => Promise.resolve(123)
+                        })
+                });
+
+                it("The outbound function should be called with the resolved value", async function () {
+                    const outboundSpy = jest.fn();
+                    apiService.setOutboundFn(outboundSpy);
+
+                    await apiService.getInboundFn()({
                         name: "apiService",
-                        props: ["foo"]
-                    },
-                    {
-                        foo: () => Promise.resolve(123)
-                    })
-            });
+                        propertyToCall: "foo",
+                        uuid: "1234",
+                        args:  []
+                    });
 
-            it("The outbound function should be called with the resolved value", async function () {
-                const outboundSpy = jest.fn();
-                apiService.setOutboundFn(outboundSpy);
-
-                await apiService.getInboundFn()({
-                    name: "apiService",
-                    propertyToCall: "foo",
-                    uuid: "1234",
-                    args:  []
-                });
-
-                expect(outboundSpy).toHaveBeenCalledWith({
-                    type: "resolved",
-                    uuid: "1234",
-                    returnValue: 123
-                });
+                    expect(outboundSpy).toHaveBeenCalledWith({
+                        type: "resolved",
+                        uuid: "1234",
+                        returnValue: 123
+                    });
+                })
             })
 
-            describe("When the api method returns a rejected promise", function () {
+            describe("When the promise is rejected", function () {
+                describe("When is rejected with an Error", function () {
+                    let apiService: ApiService;
+                    beforeEach(function () {
+                        apiService = createApiService({
+                                name: "apiService",
+                                props: ["foo"]
+                            },
+                            {
+                                foo: () => Promise.reject(new Error("some error"))
+                            })
+                    });
+
+                    it("The outbound function should be called with the rejected error", async function () {
+                        const outboundSpy = jest.fn();
+                        apiService.setOutboundFn(outboundSpy);
+
+                        await apiService.getInboundFn()({
+                            name: "apiService",
+                            propertyToCall: "foo",
+                            uuid: "1234",
+                            args:  []
+                        });
+
+                        expect(outboundSpy).toHaveBeenCalledWith({
+                            type: "rejected",
+                            uuid: "1234",
+                            returnValue: new Error("some error")
+                        });
+                    })
+                })
+
+                describe("When is rejected without an error", function () {
+                    let apiService: ApiService;
+                    beforeEach(function () {
+                        apiService = createApiService({
+                                name: "apiService",
+                                props: ["foo"]
+                            },
+                            {
+                                foo: () => Promise.reject("reject reason")
+                            })
+                    });
+
+                    it("The outbound function should be called with the rejected valuer", async function () {
+                        const outboundSpy = jest.fn();
+                        apiService.setOutboundFn(outboundSpy);
+
+                        await apiService.getInboundFn()({
+                            name: "apiService",
+                            propertyToCall: "foo",
+                            uuid: "1234",
+                            args:  []
+                        });
+
+                        expect(outboundSpy).toHaveBeenCalledWith({
+                            type: "rejected",
+                            uuid: "1234",
+                            returnValue: "reject reason"
+                        });
+                    })
+                })
 
             })
         })
