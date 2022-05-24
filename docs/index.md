@@ -220,3 +220,5 @@ exception:
 
 So Proxy-com already provides Transport for inter-process communication scenarios. In the future it may provide additional
 transports for other scenarios, but you can build your own transport.
+
+If you need help building your own Transport let me know, and I'll be happy to help!
