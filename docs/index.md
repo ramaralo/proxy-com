@@ -78,26 +78,26 @@ const result = await proxy.add(1, 2); // 3
 
 ## proxycom.exposeApi(config)
 
-#### config: [IExposeApiOptions](proxy-com/src/model/IExposeApiOptions.ts)
+#### config: [IExposeApiOptions](src/model/IExposeApiOptions.ts)
 
 A config object with the following properties:
 
-| key       | type                                                       | mandatory | description                                                                                                          |
-| --------- | ---------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------- |
-| apiConfig | [IApiConfig](proxy-com/src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](proxy-com/src/model/IApiConfig.ts) for more details |
-| transport | [ITransportConstructor](proxy-com/src/model/ITransport.ts) | yes       | A transport constructor                                                                                              |
-| api       | Object                                                     | yes       | A reference to the exposed API                                                                                       |
+| key       | type                                             | mandatory | description                                                                                                |
+| --------- | ------------------------------------------------ | --------- | ---------------------------------------------------------------------------------------------------------- |
+| apiConfig | [IApiConfig](src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](src/model/IApiConfig.ts) for more details |
+| transport | [ITransportConstructor](src/model/ITransport.ts) | yes       | A transport constructor                                                                                    |
+| api       | Object                                           | yes       | A reference to the exposed API                                                                             |
 
 ## proxycom.createProxy(config)
 
-#### config: [IApiConfig](proxy-com/src/model/IApiConfig.ts)
+#### config: [IApiConfig](src/model/IApiConfig.ts)
 
 A config object with the following properties:
 
-| key       | type                                                       | mandatory | description                                                                                                          |
-| --------- | ---------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------- |
-| apiConfig | [IApiConfig](proxy-com/src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](proxy-com/src/model/IApiConfig.ts) for more details |
-| transport | [ITransportConstructor](proxy-com/src/model/ITransport.ts) | yes       | A transport constructor                                                                                              |
+| key       | type                                             | mandatory | description                                                                                                |
+| --------- | ------------------------------------------------ | --------- | ---------------------------------------------------------------------------------------------------------- |
+| apiConfig | [IApiConfig](src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](src/model/IApiConfig.ts) for more details |
+| transport | [ITransportConstructor](src/model/ITransport.ts) | yes       | A transport constructor                                                                                    |
 
 `_`Most of the time, configs for both methods are the same so, when possible, it's recommended that the configs come from the same file.`_`
 
@@ -211,4 +211,4 @@ exception:
 ### What values can be returned from exposed APIs?
 
 - Any value that can be serialized
-- Promises
+- Promises that resolve or reject to any serializable value
