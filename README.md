@@ -2,8 +2,6 @@
 [![test](https://github.com/ramaralo/proxy-com/actions/workflows/test.yml/badge.svg)](https://github.com/ramaralo/proxy-com/actions/workflows/test.yml)
 [![GitHub license](https://img.shields.io/github/license/ramaralo/proxy-com)](https://github.com/ramaralo/proxy-com/blob/main/LICENSE)
 
-# THIS IS A WIP
-
 # proxy-com
 
 Consume apis that run on different context.
@@ -171,3 +169,7 @@ proxy.foo("childProcess").then((response) => {
   console.log(response); // "Hi childProcess, nice to meet you!"
 });
 ```
+
+Further documentation at:
+
+[proxy-com](https://ramaralo.github.io/proxy-com/)
