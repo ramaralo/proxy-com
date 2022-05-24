@@ -1,4 +1,3 @@
-import { IApiConfig } from "./model/IApiConfig";
 import { ApiService } from "./apiService/ApiService";
 import { ApiProxy } from "./apiProxy/ApiProxy";
 import { IExposeApiOptions } from "./model/IExposeApiOptions";
