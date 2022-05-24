@@ -2,11 +2,11 @@
 
 Consume apis that run on different context.
 
-Proxy-com is built to facilitate the communication between different Javascript contexts like processes, browser
+Proxy-com facilitates the communication between different Javascript contexts. By context, we mean processes, browser
 windows, web-workers, etc. It does this by implementing the Proxy pattern so that you can "consume" any API as if it was
 the "real" API.
 
-Weather you want to consume an API that runs on a different process, on a different browser window, on a Web-Worker, etc.
+Weather you want to consume an API that runs on a different process, on a different browser window, on a Web-worker, etc.
 Proxy-com can be adapted to work on any scenario. If fact, all these scenarios are the same, with the difference of the
 method used to exchange data between processes, windows, etc. To allow for adaptation to each scenario, Proxy-com uses
 specific **Transports** that know how to communicate between each context.
@@ -32,7 +32,7 @@ Or include on your HTML:
 
 Replacing `<version>` with the desired version. In this case, Proxy-com will be available at `window.ProxyCom`.
 
-## Require or import
+### Require or import
 
 ```javascript
 const { proxycom } = require("proxy-com");
@@ -78,16 +78,19 @@ const result = await proxy.add(1, 2); // 3
 
 ## proxycom.exposeApi(config)
 
-#### config: object
+#### config: [IExposeApiOptions](../src/model/IExposeApiOptions.ts)
 
 A config object with the following properties:
 
-| key   | type     | mandatory | description                                                                                                   |
-| ----- | -------- | --------- | ------------------------------------------------------------------------------------------------------------- |
-| name  | string   | yes       | A unique name to the exposed api. MUST match the name passed to _createProxy()_                               |
-| props | string[] | yes       | A list of properties to expose on the api. Can match all the methods on the API or a subset of those methods. |
+| key       | type                                     | mandatory | description                                                                                                   |
+| --------- | ---------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------- |
+| apiConfig | [IApiConfig](../src/model/IApiConfig.ts) | yes       | An object that repesents the API to be exposed. See [IApiConfig](../src/model/IApiConfig.ts) for more details |
+| props     | string[]                                 | yes       | A list of properties to expose on the api. Can match all the methods on the API or a subset of those methods. |
+| props     | string[]                                 | yes       | A list of properties to expose on the api. Can match all the methods on the API or a subset of those methods. |
 
 ## proxycom.createProxy(config)
+
+#### config: [IApiConfig](../src/model/IApiConfig.ts)
 
 A config object with the following properties:
 
@@ -96,15 +99,11 @@ A config object with the following properties:
 | name  | string   | yes       | A unique name to the exposed api. MUST match the name passed to _exposeApi()_                                 |
 | props | string[] | yes       | A list of properties to expose on the api. Can match all the methods on the API or a subset of those methods. |
 
-Most of the time, configs for both methods are the same so, when possible, it's recommended to share the same file.
+`_`Most of the time, configs for both methods are the same so, when possible, it's recommended that the configs come from the same file.`_`
 
 # One lib, different contexts
 
-**Proxy-com** itself is unaware of the context it is used in. It can be used between NodeJs processes, Browser windows,
-Web Workers, Chrome extensions, Electron processes, etc. To achieve this, it uses specific Transports that do the actual
-work of sending messages between contexts.
-
-One common scenario is when we want to consume apis that run on a different NodeJs process. As an example, let's look at
+**Proxy-com** itself is unaware of the context it is used in. As an example, let's look at
 the scenario of exposing an API between two NodeJs processes.
 
 Consider two sibling files: `parentProcess.js` and `childProcess.js`:
