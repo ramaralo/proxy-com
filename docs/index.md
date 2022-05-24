@@ -82,11 +82,11 @@ const result = await proxy.add(1, 2); // 3
 
 A config object with the following properties:
 
-| key       | type                                     | mandatory | description                                                                                                   |
-| --------- | ---------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------- |
-| apiConfig | [IApiConfig](../src/model/IApiConfig.ts) | yes       | An object that repesents the API to be exposed. See [IApiConfig](../src/model/IApiConfig.ts) for more details |
-| props     | string[]                                 | yes       | A list of properties to expose on the api. Can match all the methods on the API or a subset of those methods. |
-| props     | string[]                                 | yes       | A list of properties to expose on the api. Can match all the methods on the API or a subset of those methods. |
+| key       | type                                                | mandatory | description                                                                                                   |
+| --------- | --------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------- |
+| apiConfig | [IApiConfig](../src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](../src/model/IApiConfig.ts) for more details |
+| transport | [ITransportConstructor](../src/model/ITransport.ts) | yes       | A transport constructor                                                                                       |
+| api       | Object                                              | yes       | A reference to the exposed API                                                                                |
 
 ## proxycom.createProxy(config)
 
@@ -94,19 +94,17 @@ A config object with the following properties:
 
 A config object with the following properties:
 
-| key   | type     | mandatory | description                                                                                                   |
-| ----- | -------- | --------- | ------------------------------------------------------------------------------------------------------------- |
-| name  | string   | yes       | A unique name to the exposed api. MUST match the name passed to _exposeApi()_                                 |
-| props | string[] | yes       | A list of properties to expose on the api. Can match all the methods on the API or a subset of those methods. |
+| key       | type                                                | mandatory | description                                                                                                   |
+| --------- | --------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------- |
+| apiConfig | [IApiConfig](../src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](../src/model/IApiConfig.ts) for more details |
+| transport | [ITransportConstructor](../src/model/ITransport.ts) | yes       | A transport constructor                                                                                       |
 
 `_`Most of the time, configs for both methods are the same so, when possible, it's recommended that the configs come from the same file.`_`
 
 # One lib, different contexts
 
-**Proxy-com** itself is unaware of the context it is used in. As an example, let's look at
-the scenario of exposing an API between two NodeJs processes.
-
-Consider two sibling files: `parentProcess.js` and `childProcess.js`:
+**Proxy-com** itself is unaware of the context it is used in. As an example, let's look at a scenario of exposing an API
+between two NodeJs processes. Consider two sibling files: `parentProcess.js` and `childProcess.js`:
 
 ```javascript
 // parentProcess.js
@@ -196,7 +194,7 @@ const { proxycom } = require("proxy-com");
 const { processTransport } = require("proxy-com/transports/nodejs/process");
 
 const proxy = proxycom.createProxy({
-  apiConfig: { name: "calculator", props: ["add"] }, // declaring what method we want to proxy (usually the same that are exposed)
+  apiConfig: { name: "calculator", props: ["add"] },
   transport: processTransport.getForChildProcess(process), // using a child process transport specific for multi NodeJs processes
 });
 
@@ -204,3 +202,13 @@ proxy.add(1, 2).then((result) => {
   console.log(result); // 3
 });
 ```
+
+As you can see, `proxy` is an object that also exposes an `add()` method that behaves as `calculator.add()` with one
+exception:
+
+**All methods exposed on `proxy` objects are Async.** regardless of the method being sync or async on the api side.
+
+### What values can be returned from exposed APIs?
+
+- Any value that can be serialized
+- Promises
