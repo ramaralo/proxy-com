@@ -92,7 +92,7 @@ A config object with the following properties:
 
 ### proxycom.createProxy(config)
 
-#### config: [ICreateOptions](https://github.com/ramaralo/proxy-com/blob/main/src/model/IApiICreateOptions.ts)
+#### config: [ICreateProxyOptions](https://github.com/ramaralo/proxy-com/blob/main/src/model/ICreateProxyOptions.ts)
 
 A config object with the following properties:
 
@@ -222,3 +222,8 @@ So Proxy-com already provides Transport for inter-process communication scenario
 transports for other scenarios, but you can build your own transport.
 
 If you need help building your own Transport let me know, and I'll be happy to help!
+
+Meanwhile, if you want to get started checkout:
+
+- https://github.com/ramaralo/proxy-com/blob/main/src/transports/nodejs/process.ts
+- https://github.com/ramaralo/proxy-com/blob/main/src/model/ITransport.ts
