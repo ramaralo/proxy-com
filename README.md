@@ -173,3 +173,7 @@ proxy.foo("childProcess").then((response) => {
 Further documentation at:
 
 [proxy-com](https://ramaralo.github.io/proxy-com/)
+
+NPM package:
+
+[proxy-com](https://www.npmjs.com/package/proxy-com)
