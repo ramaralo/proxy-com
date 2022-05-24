@@ -11,6 +11,11 @@ Proxy-com can be adapted to work on any scenario. If fact, all these scenarios a
 method used to exchange data between processes, windows, etc. To allow for adaptation to each scenario, Proxy-com uses
 specific **Transports** that know how to communicate between each context.
 
+Proxy-com is used in two steps:
+
+1. Expose an API
+2. Create a proxy to the exposed API
+
 ## Quick start
 
 ### Install
@@ -22,10 +27,10 @@ From NodeJs:
 Or include on your HTML:
 
 ```html
-<script src="https://unpkg.com/proxy-com@<version>/dist/bundles/umd/proxycom-<version>.js" />
+<script src="https://unpkg.com/proxy-com@<version>/dist/proxycom-umd.js" />
 ```
 
-Replacing `<version>` with the desired version.
+Replacing `<version>` with the desired version. In this case, Proxy-com will be available at `window.ProxyCom`.
 
 ## Require or import
 
@@ -40,16 +45,19 @@ import { proxycom } from "proxy-com";
 Expose an api:
 
 ```javascript
-const myApi = {
-    foo: () => {
-        // do some stuff
+const calculator = {
+    add: (a, b) => {
+        return a + b;
     }
 }
 
 proxycom.exposeApi({
-    apiConfig: <someConfig>, // we will explain this ahead
-    transport: <someTransport>, // we will explain this ahead
-    api: myApi
+    apiConfig: {
+        name: "calculator", // The api name we are exposing. Keep in mind this needs to match the name passed to the proxy config!
+        props: ["add"] // The api properties we want to expose. Tipically this will contain all api methods, but can be a subset if you want to
+    },
+    transport: <someTranport>>, // A transport for the context where the api is running.
+    api: calculator // A reference to the api
 });
 ```
 
@@ -57,12 +65,38 @@ And then create a proxy to that api:
 
 ```javascript
 const proxy = proxycom.createProxy({
-    apiConfig: <someConfig>, // we will explain this ahead
-    transport: <someTransport>, // we will explain this ahead
+    apiConfig: {
+        name: "calculator", // The api name we are create a proxy to. Keep in mind this needs to match the name passed to the exposed api
+        props: ["add"] // The api properties we want to expose. Tipically this will contain all api methods, but can be a subset if you want to
+    },
+    transport: <someTransport>, // A transport for the context where the proxy is running.
 });
 
-proxy.foo();
+// now we are ready to call the proxy
+const result = await proxy.add(1, 2); // 3
 ```
+
+## proxycom.exposeApi(config)
+
+#### config: object
+
+A config object with the following properties:
+
+| key   | type     | mandatory | description                                                                                                   |
+| ----- | -------- | --------- | ------------------------------------------------------------------------------------------------------------- |
+| name  | string   | yes       | A unique name to the exposed api. MUST match the name passed to _createProxy()_                               |
+| props | string[] | yes       | A list of properties to expose on the api. Can match all the methods on the API or a subset of those methods. |
+
+## proxycom.createProxy(config)
+
+A config object with the following properties:
+
+| key   | type     | mandatory | description                                                                                                   |
+| ----- | -------- | --------- | ------------------------------------------------------------------------------------------------------------- |
+| name  | string   | yes       | A unique name to the exposed api. MUST match the name passed to _exposeApi()_                                 |
+| props | string[] | yes       | A list of properties to expose on the api. Can match all the methods on the API or a subset of those methods. |
+
+Most of the time, configs for both methods are the same so, when possible, it's recommended to share the same file.
 
 # One lib, different contexts
 
@@ -70,8 +104,10 @@ proxy.foo();
 Web Workers, Chrome extensions, Electron processes, etc. To achieve this, it uses specific Transports that do the actual
 work of sending messages between contexts.
 
-One common scenario is when we want to consume apis that run on a different NodeJs process. This is one possible (simplified)
-way to create a new process in NodeJs. Consider two sibling files: `parentProcess.js` and `childProcess.js`:
+One common scenario is when we want to consume apis that run on a different NodeJs process. As an example, let's look at
+the scenario of exposing an API between two NodeJs processes.
+
+Consider two sibling files: `parentProcess.js` and `childProcess.js`:
 
 ```javascript
 // parentProcess.js
@@ -114,9 +150,9 @@ const { fork } = require("child_process");
 const child = fork(path.resolve(__dirname, "childProcess.js"));
 
 // we want childProcess to access this api:
-const myApi = {
-  foo: (arg) => {
-    console.log("Foo called with", arg);
+const calculator = {
+  add: (a, b) => {
+    return a + b;
   },
 };
 
@@ -136,20 +172,19 @@ const path = require("path");
 const { fork } = require("child_process");
 const child = fork(path.resolve(__dirname, "childProcess.js"));
 
-const { proxycom } = require("proxy-com");
-const { processTransport } = require("proxy-com/transports/nodejs/process");
+const { proxycom } = require("proxy-com"); // import Proxy-com
+const { processTransport } = require("proxy-com/transports/nodejs/process"); // Use a transport for process communication provided by Proxy-com
 
-const myApi = {
-  foo: (arg) => {
-    console.log("Foo called with", arg);
-    return `Hi ${arg}, nice to meet you!`;
+const calculator = {
+  add: (a, b) => {
+    return a + b;
   },
 };
 
 proxycom.exposeApi({
-  apiConfig: { name: "myApi", props: ["foo"] }, // declaring what methods of myApi we want to expose
+  apiConfig: { name: "calculator", props: ["add"] },
   transport: processTransport.getForParentProcess(child), // using a parent process transport specific for multi NodeJs processes
-  api: myApi, // exposing the api
+  api: calculator,
 });
 ```
 
@@ -162,11 +197,11 @@ const { proxycom } = require("proxy-com");
 const { processTransport } = require("proxy-com/transports/nodejs/process");
 
 const proxy = proxycom.createProxy({
-  apiConfig: { name: "myApi", props: ["foo"] }, // declaring what method we want to proxy (usually the same that are exposed)
+  apiConfig: { name: "calculator", props: ["add"] }, // declaring what method we want to proxy (usually the same that are exposed)
   transport: processTransport.getForChildProcess(process), // using a child process transport specific for multi NodeJs processes
 });
 
-proxy.foo("childProcess").then((response) => {
-  console.log(response); // "Hi childProcess, nice to meet you!"
+proxy.add(1, 2).then((result) => {
+  console.log(result); // 3
 });
 ```

@@ -23,7 +23,7 @@ From NodeJs:
 Or include on your HTML:
 
 ```html
-<script src="https://unpkg.com/proxy-com@<version>/dist/web.bundle.js" />
+<script src="https://unpkg.com/proxy-com@<version>/dist/proxycom-umd.js" />
 ```
 
 Replacing `<version>` with the desired version.
