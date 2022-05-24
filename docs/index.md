@@ -80,26 +80,26 @@ const result = await proxy.add(1, 2); // 3
 
 ### proxycom.exposeApi(config)
 
-#### config: [IExposeApiOptions](src/model/IExposeApiOptions.ts)
+#### config: [IExposeApiOptions](https://github.com/ramaralo/proxy-com/blob/main/src/model/IExposeApiOptions.ts)
 
 A config object with the following properties:
 
-| key       | type                                             | mandatory | description                                                                                                |
-| --------- | ------------------------------------------------ | --------- | ---------------------------------------------------------------------------------------------------------- |
-| apiConfig | [IApiConfig](src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](src/model/IApiConfig.ts) for more details |
-| transport | [ITransportConstructor](src/model/ITransport.ts) | yes       | A transport constructor                                                                                    |
-| api       | Object                                           | yes       | A reference to the exposed API                                                                             |
+| key       | type                                                                                             | mandatory | description                                                                                                                                                |
+| --------- | ------------------------------------------------------------------------------------------------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| apiConfig | [IApiConfig](https://github.com/ramaralo/proxy-com/blob/main/src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](https://github.com/ramaralo/proxy-com/blob/main/src/model/IApiConfig.ts) for more details |
+| transport | [ITransportConstructor](https://github.com/ramaralo/proxy-com/blob/main/src/model/ITransport.ts) | yes       | A transport constructor                                                                                                                                    |
+| api       | Object                                                                                           | yes       | A reference to the exposed API                                                                                                                             |
 
 ### proxycom.createProxy(config)
 
-#### config: [ICreateOptions](src/model/IApiICreateOptions.ts)
+#### config: [ICreateOptions](https://github.com/ramaralo/proxy-com/blob/main/src/model/IApiICreateOptions.ts)
 
 A config object with the following properties:
 
-| key       | type                                             | mandatory | description                                                                                                |
-| --------- | ------------------------------------------------ | --------- | ---------------------------------------------------------------------------------------------------------- |
-| apiConfig | [IApiConfig](src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](src/model/IApiConfig.ts) for more details |
-| transport | [ITransportConstructor](src/model/ITransport.ts) | yes       | A transport constructor                                                                                    |
+| key       | type                                                                                             | mandatory | description                                                                                                                                                |
+| --------- | ------------------------------------------------------------------------------------------------ | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| apiConfig | [IApiConfig](https://github.com/ramaralo/proxy-com/blob/main/src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](https://github.com/ramaralo/proxy-com/blob/main/src/model/IApiConfig.ts) for more details |
+| transport | [ITransportConstructor](https://github.com/ramaralo/proxy-com/blob/main/src/model/ITransport.ts) | yes       | A transport constructor                                                                                                                                    |
 
 _Most of the time, configs for both methods are the same so, when possible, it's recommended that the configs come from the same file._
 
