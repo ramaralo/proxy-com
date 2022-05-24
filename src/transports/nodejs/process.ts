@@ -2,7 +2,7 @@ import { ChildProcess } from "child_process";
 import { IResponsePayload } from "../../model/IResponsePayload";
 import { IRequestPayload } from "../../model/IRequestPayload";
 import * as Process from "process";
-import { ITransport, ITransportConstructor } from "../../model/ITransport";
+import { ITransportConstructor } from "../../model/ITransport";
 
 export const processTransport = {
   getForParentProcess: (child: ChildProcess): ITransportConstructor => {
