@@ -1,6 +1,6 @@
 {
   "name": "proxy-com",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Consume apis that run on different context",
   "keywords": [
     "proxy",
