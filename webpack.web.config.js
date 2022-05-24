@@ -11,7 +11,7 @@ const webConfig = {
   },
   output: {
     path: path.resolve(__dirname, "dist/"),
-    filename: `proxycom-umd-${process.env.npm_package_version}.js`,
+    filename: `proxycom-umd.js`,
     libraryTarget: "umd",
     globalObject: "this",
     libraryExport: "default",

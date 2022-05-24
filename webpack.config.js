@@ -5,7 +5,7 @@ const nodeConfig = {
   target: "node",
   output: {
     path: path.resolve(__dirname, "dist/"),
-    filename: `proxycom-commonjs-${process.env.npm_package_version}.js`,
+    filename: `proxycom-commonjs.js`,
     libraryTarget: "umd", // TODO: verify this
     libraryExport: "default",
   },
