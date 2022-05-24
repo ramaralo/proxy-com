@@ -16,9 +16,9 @@ Proxy-com is used in two steps:
 1. Expose an API
 2. Create a proxy to the exposed API
 
-## Quick start
+# Quick start
 
-### Install
+## Install
 
 From NodeJs:
 
@@ -76,7 +76,9 @@ const proxy = proxycom.createProxy({
 const result = await proxy.add(1, 2); // 3
 ```
 
-## proxycom.exposeApi(config)
+## API
+
+### proxycom.exposeApi(config)
 
 #### config: [IExposeApiOptions](src/model/IExposeApiOptions.ts)
 
@@ -88,9 +90,9 @@ A config object with the following properties:
 | transport | [ITransportConstructor](src/model/ITransport.ts) | yes       | A transport constructor                                                                                    |
 | api       | Object                                           | yes       | A reference to the exposed API                                                                             |
 
-## proxycom.createProxy(config)
+### proxycom.createProxy(config)
 
-#### config: [IApiConfig](src/model/IApiConfig.ts)
+#### config: [ICreateOptions](src/model/IApiICreateOptions.ts)
 
 A config object with the following properties:
 
@@ -99,12 +101,15 @@ A config object with the following properties:
 | apiConfig | [IApiConfig](src/model/IApiConfig.ts)            | yes       | An object that repesents the API to be exposed. See [IApiConfig](src/model/IApiConfig.ts) for more details |
 | transport | [ITransportConstructor](src/model/ITransport.ts) | yes       | A transport constructor                                                                                    |
 
-`_`Most of the time, configs for both methods are the same so, when possible, it's recommended that the configs come from the same file.`_`
+_Most of the time, configs for both methods are the same so, when possible, it's recommended that the configs come from the same file._
 
 # One lib, different contexts
 
-**Proxy-com** itself is unaware of the context it is used in. As an example, let's look at a scenario of exposing an API
-between two NodeJs processes. Consider two sibling files: `parentProcess.js` and `childProcess.js`:
+**Proxy-com** itself is unaware of the context it is used in. So it doesn't know if it is being used between processes,
+between browser windows or any other scenario. But _transports_ know.
+
+As an example, let's look at a scenario of exposing an API between two NodeJs processes. Consider two sibling files:
+`parentProcess.js` and `childProcess.js`:
 
 ```javascript
 // parentProcess.js
@@ -212,3 +217,6 @@ exception:
 
 - Any value that can be serialized
 - Promises that resolve or reject to any serializable value
+
+So Proxy-com already provides Transport for inter-process communication scenarios. In the future it may provide additional
+transports for other scenarios, but you can build your own transport.
